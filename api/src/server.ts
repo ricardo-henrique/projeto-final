@@ -3,7 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { AppDataSource } from "./config/data-source";
-import { initializedFirebase } from "./config/firebase";
+import { initializeFirebase } from "./config/firebase";
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 AppDataSource.initialize()
   .then(() => {
     console.log("Banco de dados SQLite conectado com sucesso!");
-    initializedFirebase();
+    initializeFirebase();
     console.log("Firebase Admin SDK inicializado com sucesso!");
     app.listen(PORT, () => {
       console.log(`Servidor rodando em http://localhost:${PORT}`);

@@ -36,17 +36,17 @@ export class Post {
   @UpdateDateColumn()
   updateAt!: Date;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE", eager: false })
   @JoinColumn({ name: "authorId" })
   author!: User;
 
   @Column()
   authorId!: string;
 
-  @ManyToOne(() => Category, (category) => category.id, { onDelete: "SET NULL" })
-  @JoinColumn()
-  category!: Category;
+  @ManyToOne(() => Category, (category) => category.id, { onDelete: "SET NULL", nullable: true })
+  @JoinColumn({ name: "categoryId" })
+  category!: Category | null;
 
-  @Column()
-  categoryId?: string;
+  @Column({ nullable: true })
+  categoryId?: string | null;
 }

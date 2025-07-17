@@ -40,3 +40,5 @@ export const adminAuthMiddleware = (req: Request, res: Response, next: NextFunct
     }
   });
 };
+
+export default authMiddleware;
