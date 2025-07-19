@@ -24,8 +24,8 @@ export class Post {
   @Column("text")
   content!: string;
 
-  @Column({ nullable: true })
-  imageUrl?: string;
+  @Column({ type: "text", nullable: true })
+  imageUrl?: string | null;
 
   @Column({ default: "draft" })
   status!: string;

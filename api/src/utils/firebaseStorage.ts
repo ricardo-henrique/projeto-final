@@ -1,8 +1,5 @@
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { initializeFirebase } from "../config/firebase";
-
-initializeFirebase();
-const storage = getStorage();
+import { getFirebaseStorage, initializeFirebase } from "../config/firebase";
 
 /**
  * Faz upload de um arquivo para o Firebase Storage
@@ -11,11 +8,29 @@ const storage = getStorage();
  * @param fileName
  * @returns URL
  */
-export const uploadFileToFirebase = async (fileBuffer: Buffer, folder: string, fileName: string): Promise<string> => {
-  const storageRef = ref(storage, `${folder}${fileName}`);
-  const snapshot = await uploadBytes(storageRef, fileBuffer);
-  const downloadURL = await getDownloadURL(snapshot.ref);
-  return downloadURL;
+export const uploadFileToFirebase = async (
+  fileBuffer: Buffer,
+  folder: string,
+  fileName: string,
+  contentType: string
+): Promise<string> => {
+  const storage = getFirebaseStorage();
+  const bucket = storage.bucket();
+  const file = bucket.file(`${folder}/${fileName}`);
+
+  await file.save(fileBuffer, {
+    resumable: false,
+    metadata: {
+      contentType: contentType,
+    },
+  });
+
+  const [url] = await file.getSignedUrl({
+    action: "read",
+    expires: "01-01-3015",
+  });
+
+  return url;
 };
 
 /**
@@ -24,9 +39,11 @@ export const uploadFileToFirebase = async (fileBuffer: Buffer, folder: string, f
  */
 export const deleteFileFromFirebase = async (fileUrl: string): Promise<void> => {
   try {
-    const filrRef = ref(storage, fileUrl);
-    await deleteObject(filrRef);
-    console.log(`Arquivo ${fileUrl} deletado do Firebase Storage`);
+    const storage = getFirebaseStorage();
+    const bucket = storage.bucket();
+    const filepath = new URL(fileUrl).pathname.substring(1);
+    await bucket.file(filepath).delete();
+    console.log(`Arquivo ${fileUrl} deletado do Firebase Storage.`);
   } catch (error: any) {
     if (error.code === "storage/object-not-found") {
       console.warn(`Tentativa de deletar arquivo não existente no Storage: ${fileUrl}`);
