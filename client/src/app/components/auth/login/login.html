@@ -1,1 +1,81 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <h2>Entrar na sua Conta</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          }"
+        />
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="loginForm.get('email')?.errors?.['required']"
+            >Email é obrigatório.</span
+          >
+          <span *ngIf="loginForm.get('email')?.errors?.['email']"
+            >Email inválido.</span
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+          }"
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Senha é obrigatória.</span
+          >
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || isLoading"
+        class="btn btn-primary"
+      >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{ isLoading ? "Entrando..." : "Entrar" }}
+      </button>
+    </form>
+    <div class="register-link">
+      Ainda não tem uma conta?
+      <a [routerLink]="['/register']">Cadastre-se aqui</a>.
+    </div>
+  </div>
+</div>

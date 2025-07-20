@@ -1,1 +1,100 @@
-<p>home works!</p>
+<div class="home-container">
+  <header class="main-header">
+    <div class="logo">
+      <a routerLink="/">
+        <img
+          src="https://placehold.co/40x40/007bff/ffffff?text=CMS"
+          alt="Logo CMS"
+          class="logo-image"
+        />
+        <span class="logo-text">Tech CMS</span>
+      </a>
+    </div>
+    <nav class="main-nav">
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li *ngIf="isUserLoggedIn">
+          <a routerLink="/posts/create">Criar Post</a>
+        </li>
+        <li *ngIf="isUserLoggedIn && userRole === 'admin'">
+          <a routerLink="/admin/categories">Categorias</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="auth-actions">
+      <ng-container *ngIf="!isUserLoggedIn">
+        <a routerLink="/login" class="btn btn-login">Login</a>
+        <a routerLink="/register" class="btn btn-register">Registrar</a>
+      </ng-container>
+      <ng-container *ngIf="isUserLoggedIn">
+        <span class="user-greeting">Olá, {{ userFirstName }}!</span>
+        <button (click)="logout()" class="btn btn-logout">Sair</button>
+      </ng-container>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <aside class="sidebar-left">
+      <h3>Categorias</h3>
+      <ul>
+        <li><a href="#">Processadores</a></li>
+        <li><a href="#">Placas de Vídeo</a></li>
+        <li><a href="#">Armazenamento</a></li>
+        <li><a href="#">Memória RAM</a></li>
+        <li><a href="#">Placas-Mãe</a></li>
+        <li><a href="#">Periféricos</a></li>
+      </ul>
+      <h3>Tags Populares</h3>
+      <div class="tag-list">
+        <span class="tag">#Intel</span>
+        <span class="tag">#AMD</span>
+        <span class="tag">#NVIDIA</span>
+        <span class="tag">#SSD</span>
+        <span class="tag">#DDR5</span>
+        <span class="tag">#Gaming</span>
+      </div>
+    </aside>
+
+    <section class="posts-section">
+      <h2 class="section-title">Últimos Lançamentos e Análises</h2>
+
+      <div *ngIf="isLoading" class="loading-indicator">
+        Carregando posts...
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && posts.length === 0" class="no-posts-message">
+        Nenhum post encontrado. Seja o primeiro a criar um!
+      </div>
+
+      <div class="posts-grid" *ngIf="!isLoading && posts.length > 0">
+        <div class="post-card" *ngFor="let post of posts">
+          <img
+            [src]="post.imageUrl"
+            alt="{{ post.title }}"
+            class="post-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/000000?text=Imagem+Nao+Disponivel';"
+          />
+          <div class="post-content">
+            <h3 class="post-title">
+              <a [routerLink]="['/posts', post.slug]">{{ post.title }}</a>
+            </h3>
+            <p class="post-meta">
+              Por <span class="author-name">{{ post.author.username }}</span> em
+              <span class="post-category">{{ post.category.name }}</span>
+            </p>
+            <p class="post-date">{{ formatDate(post.createdAt) }}</p>
+            <div class="post-excerpt">
+              {{ post.content.substring(0, 150) }}...
+            </div>
+            <a [routerLink]="['/posts', post.slug]" class="read-more"
+              >Leia mais &rarr;</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

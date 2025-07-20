@@ -1,1 +1,149 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <div class="header">
+      <div class="traffic-lights">
+        <span class="red"></span>
+        <span class="yellow"></span>
+        <span class="green"></span>
+      </div>
+    </div>
+    <div class="code-editor-content">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="line-number">1</div>
+        <div class="form-group">
+          <label for="firstName" class="code-label">firstName:</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="code-input"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('firstName')?.invalid &&
+                registerForm.get('firstName')?.touched
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('firstName')?.invalid &&
+              registerForm.get('firstName')?.touched
+            "
+            class="invalid-feedback"
+          >
+            Nome é obrigatório.
+          </div>
+        </div>
+
+        <div class="line-number">2</div>
+        <div class="form-group">
+          <label for="lastName" class="code-label">lastName:</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="code-input"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('lastName')?.invalid &&
+                registerForm.get('lastName')?.touched
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('lastName')?.invalid &&
+              registerForm.get('lastName')?.touched
+            "
+            class="invalid-feedback"
+          >
+            Sobrenome é obrigatório.
+          </div>
+        </div>
+
+        <div class="line-number">3</div>
+        <div class="form-group">
+          <label for="email" class="code-label">email:</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="code-input"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('email')?.invalid &&
+                registerForm.get('email')?.touched
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.get('email')?.errors?.['required']"
+              >Email é obrigatório.</span
+            >
+            <span *ngIf="registerForm.get('email')?.errors?.['email']"
+              >Email inválido.</span
+            >
+          </div>
+        </div>
+
+        <div class="line-number">4</div>
+        <div class="form-group">
+          <label for="password" class="code-label">password:</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="code-input"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('password')?.invalid &&
+                registerForm.get('password')?.touched
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.get('password')?.errors?.['required']"
+              >Senha é obrigatória.</span
+            >
+            <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
+              >A senha deve ter pelo menos 8 caracteres.</span
+            >
+          </div>
+        </div>
+
+        <div class="line-number">5</div>
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <div class="line-number">6</div>
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid || isLoading"
+          class="btn btn-submit"
+        >
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isLoading ? "Registrando..." : "Registrar" }}
+        </button>
+        <div class="line-number">7</div>
+        <div class="login-link">
+          Já tem uma conta? <a [routerLink]="['/login']">Faça login aqui</a>.
+        </div>
+        <div class="line-number">8</div>
+      </form>
+    </div>
+  </div>
+</div>

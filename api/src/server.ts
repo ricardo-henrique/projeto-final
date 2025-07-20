@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/categories", categoryRoutes);
-app.use("api/v1/posts", postRoutes);
+app.use("/api/v1/posts", postRoutes);
 
 app.use(errHandling);
 

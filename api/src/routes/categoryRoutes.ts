@@ -11,7 +11,7 @@ const categoryRepository = AppDataSource.getRepository(Category);
  * @description Cria uma nova categoria
  * @access Private (Admin)
  */
-router.post("/", adminAuthMiddleware, async (req: Request, res: Response) => {
+router.post("/", authMiddleware, adminAuthMiddleware, async (req: Request, res: Response) => {
   const { name } = req.body;
 
   if (!name) {
@@ -72,7 +72,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  * @description Atualiza uma categoria existente
  * @access Private (Admin Only)
  */
-router.put("/:id", adminAuthMiddleware, async (req: Request, res: Response) => {
+router.put("/:id", authMiddleware, adminAuthMiddleware, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -104,7 +104,7 @@ router.put("/:id", adminAuthMiddleware, async (req: Request, res: Response) => {
  * @description Deleta uma categoria
  * @access Private (Admin Only)
  */
-router.delete("/:id", adminAuthMiddleware, async (req: Request, res: Response) => {
+router.delete("/:id", authMiddleware, adminAuthMiddleware, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {

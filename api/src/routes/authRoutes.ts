@@ -14,9 +14,9 @@ const userRepository = AppDataSource.getRepository(User);
  * @access Public
  */
 router.post("/register", async (req: Request, res: Response) => {
-  const { email, password, role } = req.body;
+  const { firstName, lastName, email, password, role } = req.body;
 
-  if (!email || !password) {
+  if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({
       message: "Email e senha são obrigatórios.",
     });
@@ -32,6 +32,8 @@ router.post("/register", async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = userRepository.create({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       role: role || "user",
@@ -39,7 +41,13 @@ router.post("/register", async (req: Request, res: Response) => {
 
     await userRepository.save(newUser);
 
-    const token = generateToken({ id: newUser.id, email: newUser.email, role: newUser.role });
+    const token = generateToken({
+      id: newUser.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      role: newUser.role,
+    });
     res.status(201).json({
       message: "Usuário registrado com sucesso!",
       token,
@@ -78,13 +86,14 @@ router.post("/login", async (req: Request, res: Response) => {
       return res.status(401).json({ message: "senha incorreta." });
     }
 
-    const token = generateToken({ id: user.id, email: user.email, role: user.role });
+    const token = generateToken({ id: user.id, firstName: user.firstName, email: user.email, role: user.role });
 
     res.status(200).json({
       message: "Login bem-sucedido!",
       token,
       user: {
         id: user.id,
+        firstName: user.firstName,
         email: user.email,
         role: user.role,
       },
