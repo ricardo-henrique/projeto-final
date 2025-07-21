@@ -1,1 +1,87 @@
-<p>post-detail works!</p>
+<!-- src/app/components/posts/post-detail/post-detail.component.html -->
+
+<div class="container py-5">
+  <!-- Indicador de Carregamento -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando post...</span>
+    </div>
+    <p class="mt-2 text-secondary">Carregando post...</p>
+  </div>
+
+  <!-- Mensagem de Erro da API -->
+  <div
+    *ngIf="apiError"
+    class="alert alert-danger text-center py-4"
+    role="alert"
+  >
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ apiError }}
+    <p class="mt-2 mb-0">
+      <a routerLink="/" class="text-decoration-none text-danger"
+        ><i class="bi bi-arrow-left-circle me-1"></i> Voltar para a Home</a
+      >
+    </p>
+  </div>
+
+  <!-- Conteúdo do Post (exibido apenas se o post for carregado e não houver erro) -->
+  <div *ngIf="post && !isLoading && !apiError" class="card shadow-lg p-4">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-4 text-dark display-5 fw-bold">
+        {{ post.title }}
+      </h1>
+
+      <div class="text-center mb-4">
+        <img
+          [src]="post.imageUrl"
+          alt="{{ post.title }}"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 450px; object-fit: cover"
+          onerror="this.onerror=null;this.src='https://placehold.co/800x450/cccccc/000000?text=Imagem+Nao+Disponivel';"
+        />
+      </div>
+
+      <div
+        class="d-flex justify-content-between align-items-center mb-4 text-muted small"
+      >
+        <span>
+          <i class="bi bi-person-fill me-1"></i> Por
+          <span class="fw-semibold">{{ post.author.firstName }}</span>
+        </span>
+        <span>
+          <i class="bi bi-tags-fill me-1"></i> Categoria:
+          <span class="fw-semibold">{{ post.category?.name || "N/A" }}</span>
+        </span>
+        <span>
+          <i class="bi bi-calendar-event me-1"></i> Publicado em:
+          <span class="fw-semibold">{{
+            post.createdAt | date : "longDate" : "pt-BR"
+          }}</span>
+        </span>
+      </div>
+
+      <hr class="my-4" />
+
+      <div class="post-content fs-5 lh-base text-dark">
+        <p>{{ post.content }}</p>
+      </div>
+
+      <hr class="my-4" />
+
+      <div class="d-flex justify-content-between align-items-center">
+        <a routerLink="/" class="btn btn-outline-secondary"
+          ><i class="bi bi-arrow-left-circle me-2"></i> Voltar para a Home</a
+        >
+
+        <!-- BOTÕES DE EDIÇÃO/EXCLUSÃO (AGORA IMPLEMENTADOS) -->
+        <div *ngIf="canEditOrDeletePost()">
+          <button class="btn btn-warning me-2" (click)="editPost()">
+            <i class="bi bi-pencil-square me-1"></i> Editar
+          </button>
+          <button class="btn btn-danger" (click)="deletePost()">
+            <i class="bi bi-trash me-1"></i> Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
