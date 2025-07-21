@@ -1,1 +1,171 @@
-<p>post-create-edit works!</p>
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100 bg-light py-5"
+>
+  <div class="card shadow-lg p-4" style="max-width: 800px; width: 100%">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4 text-primary">
+        <!-- Título dinâmico para Criar ou Editar Post com ícone Bootstrap -->
+        <i
+          class="bi {{
+            isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'
+          }} me-2"
+        ></i>
+        {{ isEditMode ? "Editar Post" : "Criar Novo Post" }}
+      </h2>
+      <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+        <!-- Mensagem de erro geral da API -->
+        <div
+          *ngIf="apiError"
+          class="alert alert-danger text-center mb-3"
+          role="alert"
+        >
+          {{ apiError }}
+        </div>
+
+        <div class="mb-3">
+          <label for="title" class="form-label"
+            ><i class="bi bi-fonts me-1"></i> Título do Post</label
+          >
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                postForm.get('title')?.invalid &&
+                (postForm.get('title')?.dirty || postForm.get('title')?.touched)
+            }"
+          />
+          <div
+            *ngIf="postForm.get('title')?.errors?.['required'] && (postForm.get('title')?.dirty || postForm.get('title')?.touched)"
+            class="invalid-feedback"
+          >
+            Título é obrigatório.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="content" class="form-label"
+            ><i class="bi bi-file-earmark-text me-1"></i> Conteúdo</label
+          >
+          <textarea
+            id="content"
+            formControlName="content"
+            class="form-control"
+            rows="8"
+            [ngClass]="{
+              'is-invalid':
+                postForm.get('content')?.invalid &&
+                (postForm.get('content')?.dirty ||
+                  postForm.get('content')?.touched)
+            }"
+          ></textarea>
+          <div
+            *ngIf="postForm.get('content')?.errors?.['required'] && (postForm.get('content')?.dirty || postForm.get('content')?.touched)"
+            class="invalid-feedback"
+          >
+            Conteúdo é obrigatório.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="categoryId" class="form-label"
+            ><i class="bi bi-tags me-1"></i> Categoria</label
+          >
+          <select
+            id="categoryId"
+            formControlName="categoryId"
+            class="form-select"
+            [ngClass]="{
+              'is-invalid':
+                postForm.get('categoryId')?.invalid &&
+                (postForm.get('categoryId')?.dirty ||
+                  postForm.get('categoryId')?.touched)
+            }"
+          >
+            <option [value]="null" disabled>Selecione uma categoria</option>
+            <!-- Opção para null -->
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div
+            *ngIf="postForm.get('categoryId')?.errors?.['required'] && (postForm.get('categoryId')?.dirty || postForm.get('categoryId')?.touched)"
+            class="invalid-feedback"
+          >
+            Categoria é obrigatória.
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="image" class="form-label"
+            ><i class="bi bi-image me-1"></i> Imagem do Post</label
+          >
+          <input
+            type="file"
+            id="image"
+            (change)="onFileSelected($event)"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': postForm.get('image')?.errors?.['required'] && (postForm.get('image')?.dirty || postForm.get('image')?.touched) && !isEditMode }"
+          />
+          <div
+            *ngIf="!isEditMode && postForm.get('image')?.errors?.['required'] && (postForm.get('image')?.dirty || postForm.get('image')?.touched)"
+            class="invalid-feedback"
+          >
+            Uma imagem é obrigatória para criar um post.
+          </div>
+          <div class="form-text text-muted mt-2">
+            {{
+              isEditMode
+                ? "Selecione uma nova imagem para substituir a atual, ou deixe em branco para manter."
+                : "Selecione uma imagem para o seu post."
+            }}
+          </div>
+
+          <div *ngIf="imagePreview" class="mt-3 text-center">
+            <img
+              [src]="imagePreview"
+              alt="Pré-visualização da Imagem"
+              class="img-thumbnail"
+              style="max-width: 300px; max-height: 200px; object-fit: cover"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 mb-3"
+          [disabled]="
+            postForm.invalid ||
+            isLoading ||
+            (isEditMode ? false : !selectedFile)
+          "
+        >
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <i class="bi {{ isEditMode ? 'bi-save' : 'bi-send' }} me-2"></i>
+          {{
+            isLoading
+              ? isEditMode
+                ? "Salvando..."
+                : "Criando..."
+              : isEditMode
+              ? "Salvar Alterações"
+              : "Criar Post"
+          }}
+        </button>
+
+        <p class="text-center mb-0">
+          <a routerLink="/" class="text-decoration-none text-secondary"
+            ><i class="bi bi-arrow-left-circle me-1"></i> Voltar para a Home</a
+          >
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

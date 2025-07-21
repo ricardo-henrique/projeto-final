@@ -1,0 +1,14 @@
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
+
+.img-thumbnail {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  background-color: #fff;
+  max-width: 100%;
+  height: auto;
+}

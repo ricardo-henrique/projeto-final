@@ -1,81 +1,102 @@
-<div class="login-container">
-  <div class="login-card">
-    <h2>Entrar na sua Conta</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid':
-              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
-          }"
-        />
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100 bg-light"
+>
+  <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4 text-primary">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Entrar na sua Conta
+      </h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Mensagem de erro geral da API -->
         <div
-          *ngIf="
-            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
-          "
-          class="invalid-feedback"
+          *ngIf="errorMessage"
+          class="alert alert-danger text-center mb-3"
+          role="alert"
         >
-          <span *ngIf="loginForm.get('email')?.errors?.['required']"
-            >Email é obrigatório.</span
-          >
-          <span *ngIf="loginForm.get('email')?.errors?.['email']"
-            >Email inválido.</span
-          >
+          {{ errorMessage }}
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid':
-              loginForm.get('password')?.invalid &&
-              loginForm.get('password')?.touched
-          }"
-        />
-        <div
-          *ngIf="
-            loginForm.get('password')?.invalid &&
-            loginForm.get('password')?.touched
-          "
-          class="invalid-feedback"
+        <div class="mb-3">
+          <label for="email" class="form-label"
+            ><i class="bi bi-envelope me-1"></i> Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('email')?.invalid &&
+                (loginForm.get('email')?.dirty ||
+                  loginForm.get('email')?.touched)
+            }"
+          />
+          <div
+            *ngIf="loginForm.get('email')?.errors?.['required'] && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+            class="invalid-feedback"
+          >
+            Email é obrigatório.
+          </div>
+          <div
+            *ngIf="loginForm.get('email')?.errors?.['email'] && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+            class="invalid-feedback"
+          >
+            Email inválido.
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="form-label"
+            ><i class="bi bi-lock me-1"></i> Senha</label
+          >
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('password')?.invalid &&
+                (loginForm.get('password')?.dirty ||
+                  loginForm.get('password')?.touched)
+            }"
+          />
+          <div
+            *ngIf="loginForm.get('password')?.errors?.['required'] && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+            class="invalid-feedback"
+          >
+            Senha é obrigatória.
+          </div>
+          <div
+            *ngIf="loginForm.get('password')?.errors?.['minlength'] && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+            class="invalid-feedback"
+          >
+            Senha deve ter no mínimo 8 caracteres.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 mb-3"
+          [disabled]="loginForm.invalid || isLoading"
         >
-          <span *ngIf="loginForm.get('password')?.errors?.['required']"
-            >Senha é obrigatória.</span
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isLoading ? "Entrando..." : "Entrar" }}
+        </button>
+
+        <p class="text-center mb-0">
+          Não tem uma conta?
+          <a routerLink="/register" class="text-decoration-none"
+            >Registre-se aqui</a
           >
-        </div>
-      </div>
-
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
-
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid || isLoading"
-        class="btn btn-primary"
-      >
-        <span
-          *ngIf="isLoading"
-          class="spinner-border spinner-border-sm"
-          role="status"
-          aria-hidden="true"
-        ></span>
-        {{ isLoading ? "Entrando..." : "Entrar" }}
-      </button>
-    </form>
-    <div class="register-link">
-      Ainda não tem uma conta?
-      <a [routerLink]="['/register']">Cadastre-se aqui</a>.
+        </p>
+      </form>
     </div>
   </div>
 </div>

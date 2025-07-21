@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable, of } from 'rxjs';
-import { Post } from '../models/post.model';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { Category, Post, PostPayload } from '../models/post.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,56 +15,187 @@ import { Post } from '../models/post.model';
 export class PostService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getPosts(): Observable<Post[]> {
-    const mockPosts: Post[] = [
-      {
-        id: '1',
-        slug: 'lancamento-nvidia-rtx-5090',
-        title: 'Lançamento da NVIDIA RTX 5090: O Que Esperar?',
-        content:
-          'Detalhes sobre a próxima geração de placas de vídeo da NVIDIA...',
-        imageUrl: 'https://placehold.co/600x400/007bff/ffffff?text=RTX+5090',
-        author: { id: 'auth1', username: 'TechGuru' },
-        category: { id: 'cat1', name: 'Placas de Vídeo' },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      {
-        id: '2',
-        slug: 'analise-amd-ryzen-9000',
-        title: 'Análise Completa: Processadores AMD Ryzen Série 9000',
-        content:
-          'Uma olhada aprofundada nos novos CPUs da AMD e seu desempenho...',
-        imageUrl: 'https://placehold.co/600x400/28a745/ffffff?text=Ryzen+9000',
-        author: { id: 'auth2', username: 'HardwareMaster' },
-        category: { id: 'cat2', name: 'Processadores' },
-        createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 dia atrás
-        updatedAt: new Date(Date.now() - 86400000).toISOString(),
-      },
-      {
-        id: '3',
-        slug: 'ssd-nvme-pcie5-vale-a-pena',
-        title: 'SSDs NVMe PCIe 5.0: Vale a Pena o Upgrade Agora?',
-        content:
-          'Explorando os benefícios e custos dos SSDs de última geração...',
-        imageUrl:
-          'https://placehold.co/600x400/ffc107/000000?text=PCIe+5.0+SSD',
-        author: { id: 'auth1', username: 'TechGuru' },
-        category: { id: 'cat3', name: 'Armazenamento' },
-        createdAt: new Date(Date.now() - 172800000).toISOString(), // 2 dias atrás
-        updatedAt: new Date(Date.now() - 172800000).toISOString(),
-      },
-    ];
-    return of(mockPosts);
-    // return this.http.get<Post[]>(`${this.apiUrl}/posts`);
+    return this.http.get<Post[]>(`${this.apiUrl}/posts`);
   }
 
-  getPostBySlug(slug: string): Observable<Post | undefined> {
-    return this.getPosts().pipe(
-      map((posts) => posts.find((post) => post.slug === slug))
+  getPostBySlug(slug: string): Observable<Post | null> {
+    return this.http.get<Post>(`${this.apiUrl}/posts/${slug}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.warn(`Post com slug '${slug}' não encontrado (404).`);
+          return of(null);
+        }
+        console.error('Erro ao buscar post por slug:', error);
+        return throwError(() => new Error('Erro ao carregar post.'));
+      })
     );
-    // return this.http.get<Post>(`${this.apiUrl}/posts/${slug}`);
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiUrl}/categories`);
+  }
+
+  createPost(postData: PostPayload, imageFile: File): Observable<Post> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('Usuário não autenticado. Não é possível criar o post.');
+    }
+
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+
+    if (postData.categoryId) {
+      formData.append('categoryId', postData.categoryId);
+    }
+    formData.append('image', imageFile);
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<Post>(`${this.apiUrl}/posts`, formData, { headers });
+  }
+
+  updatePost(
+    postId: string,
+    postData: PostPayload,
+    imageFile?: File
+  ): Observable<Post> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error(
+        'Usuário não autenticado. Não é possível atualizar o post.'
+      );
+    }
+
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    // Adiciona categoryId ou uma string vazia se for null (sua API deve lidar com isso)
+    formData.append('categoryId', postData.categoryId || '');
+
+    if (imageFile) {
+      formData.append('image', imageFile); // Adiciona a nova imagem apenas se fornecida
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Certifique-se de que sua API tem um endpoint PUT/PATCH /posts/:id que aceita FormData
+    return this.http.put<Post>(`${this.apiUrl}/posts/${postId}`, formData, {
+      headers,
+    });
+  }
+
+  deletePost(postId: string): Observable<void> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error(
+        'Usuário não autenticado. Não é possível deletar o post.'
+      );
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    // Certifique-se de que sua API tem um endpoint DELETE /posts/:id
+    return this.http.delete<void>(`${this.apiUrl}/posts/${postId}`, {
+      headers,
+    });
+  }
+
+  createCategory(categoryName: string): Observable<Category> {
+    const token = this.authService.getToken();
+    if (!token) {
+      return throwError(
+        () =>
+          new Error('Usuário não autenticado. Não é possível criar categoria.')
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', // Para enviar JSON
+    });
+
+    // Certifique-se de que sua API tem um endpoint POST /categories
+    return this.http
+      .post<Category>(
+        `${this.apiUrl}/categories`,
+        { name: categoryName },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Erro na API ao criar categoria:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  /**
+   * Atualiza uma categoria existente na API.
+   * @param categoryId O ID da categoria a ser atualizada.
+   * @param newName O novo nome da categoria.
+   * @returns Um Observable da Categoria atualizada.
+   */
+  updateCategory(categoryId: string, newName: string): Observable<Category> {
+    const token = this.authService.getToken();
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'Usuário não autenticado. Não é possível atualizar categoria.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    // Certifique-se de que sua API tem um endpoint PUT/PATCH /categories/:id
+    return this.http
+      .put<Category>(
+        `${this.apiUrl}/categories/${categoryId}`,
+        { name: newName },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Erro na API ao atualizar categoria:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  deleteCategory(categoryId: string): Observable<void> {
+    const token = this.authService.getToken();
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'Usuário não autenticado. Não é possível deletar categoria.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .delete<void>(`${this.apiUrl}/categories/${categoryId}`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Erro na API ao deletar categoria:', error);
+          return throwError(() => error);
+        })
+      );
   }
 }

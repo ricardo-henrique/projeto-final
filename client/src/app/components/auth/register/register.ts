@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { ResgisterCredentials } from '../../../models/user.model';
+import { RegisterCredentials } from '../../../models/user.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -41,7 +41,7 @@ export class Register implements OnInit {
       this.isLoading = true;
       this.errorMessage = '';
 
-      const registerData: ResgisterCredentials = {
+      const registerData: RegisterCredentials = {
         firstName: this.registerForm.value.firstName,
         lastName: this.registerForm.value.lastName,
         email: this.registerForm.value.email,

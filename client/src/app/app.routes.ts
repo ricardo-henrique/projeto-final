@@ -10,9 +10,9 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'posts/:slug', component: PostDetail },
   { path: 'posts/create', component: PostCreateEdit },
   { path: 'posts/edits/:id', component: PostCreateEdit },
+  { path: 'posts/:slug', component: PostDetail },
   { path: 'admin/categories', component: CategoryManagement },
   { path: '**', redirectTo: '' },
 ];

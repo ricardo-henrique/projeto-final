@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Login implements OnInit {
   loginForm!: FormGroup;
-  errorMessage: string = '';
+  errorMessage: string | null = null;
   isLoading: boolean = false;
 
   constructor(
@@ -31,14 +31,14 @@ export class Login implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.errorMessage = '';
+      this.errorMessage = null;
 
       const loginData: LoginCredentials = this.loginForm.value;
 
@@ -60,7 +60,7 @@ export class Login implements OnInit {
       });
     } else {
       this.errorMessage = 'Por favor, preencha todos os campos.';
-      this.loginForm.markAllAsTouched;
+      this.loginForm.markAllAsTouched();
     }
   }
 }

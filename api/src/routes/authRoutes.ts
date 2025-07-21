@@ -53,6 +53,8 @@ router.post("/register", async (req: Request, res: Response) => {
       token,
       user: {
         id: newUser.id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
         role: newUser.role,
       },

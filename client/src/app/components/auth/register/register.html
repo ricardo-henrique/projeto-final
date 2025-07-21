@@ -1,148 +1,148 @@
-<div class="register-container">
-  <div class="register-card">
-    <div class="header">
-      <div class="traffic-lights">
-        <span class="red"></span>
-        <span class="yellow"></span>
-        <span class="green"></span>
-      </div>
-    </div>
-    <div class="code-editor-content">
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100 bg-light"
+>
+  <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4 text-primary">
+        <i class="bi bi-person-plus me-2"></i>Criar Nova Conta
+      </h2>
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="line-number">1</div>
-        <div class="form-group">
-          <label for="firstName" class="code-label">firstName:</label>
+        <div
+          *ngIf="errorMessage"
+          class="alert alert-danger text-center mb-3"
+          role="alert"
+        >
+          {{ errorMessage }}
+        </div>
+
+        <div class="mb-3">
+          <label for="firstName" class="form-label"
+            ><i class="bi bi-person me-1"></i> Primeiro Nome</label
+          >
           <input
             type="text"
             id="firstName"
             formControlName="firstName"
-            class="code-input"
+            class="form-control"
             [ngClass]="{
               'is-invalid':
                 registerForm.get('firstName')?.invalid &&
-                registerForm.get('firstName')?.touched
+                (registerForm.get('firstName')?.dirty ||
+                  registerForm.get('firstName')?.touched)
             }"
           />
           <div
-            *ngIf="
-              registerForm.get('firstName')?.invalid &&
-              registerForm.get('firstName')?.touched
-            "
+            *ngIf="registerForm.get('firstName')?.errors?.['required'] && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)"
             class="invalid-feedback"
           >
-            Nome é obrigatório.
+            Primeiro nome é obrigatório.
           </div>
         </div>
 
-        <div class="line-number">2</div>
-        <div class="form-group">
-          <label for="lastName" class="code-label">lastName:</label>
+        <div class="mb-3">
+          <label for="lastName" class="form-label"
+            ><i class="bi bi-person me-1"></i> Sobrenome</label
+          >
           <input
             type="text"
             id="lastName"
             formControlName="lastName"
-            class="code-input"
+            class="form-control"
             [ngClass]="{
               'is-invalid':
                 registerForm.get('lastName')?.invalid &&
-                registerForm.get('lastName')?.touched
+                (registerForm.get('lastName')?.dirty ||
+                  registerForm.get('lastName')?.touched)
             }"
           />
           <div
-            *ngIf="
-              registerForm.get('lastName')?.invalid &&
-              registerForm.get('lastName')?.touched
-            "
+            *ngIf="registerForm.get('lastName')?.errors?.['required'] && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)"
             class="invalid-feedback"
           >
             Sobrenome é obrigatório.
           </div>
         </div>
 
-        <div class="line-number">3</div>
-        <div class="form-group">
-          <label for="email" class="code-label">email:</label>
+        <div class="mb-3">
+          <label for="email" class="form-label"
+            ><i class="bi bi-envelope me-1"></i> Email</label
+          >
           <input
             type="email"
             id="email"
             formControlName="email"
-            class="code-input"
+            class="form-control"
             [ngClass]="{
               'is-invalid':
                 registerForm.get('email')?.invalid &&
-                registerForm.get('email')?.touched
+                (registerForm.get('email')?.dirty ||
+                  registerForm.get('email')?.touched)
             }"
           />
           <div
-            *ngIf="
-              registerForm.get('email')?.invalid &&
-              registerForm.get('email')?.touched
-            "
+            *ngIf="registerForm.get('email')?.errors?.['required'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
             class="invalid-feedback"
           >
-            <span *ngIf="registerForm.get('email')?.errors?.['required']"
-              >Email é obrigatório.</span
-            >
-            <span *ngIf="registerForm.get('email')?.errors?.['email']"
-              >Email inválido.</span
-            >
+            Email é obrigatório.
+          </div>
+          <div
+            *ngIf="registerForm.get('email')?.errors?.['email'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+            class="invalid-feedback"
+          >
+            Email inválido.
           </div>
         </div>
 
-        <div class="line-number">4</div>
-        <div class="form-group">
-          <label for="password" class="code-label">password:</label>
+        <div class="mb-4">
+          <label for="password" class="form-label"
+            ><i class="bi bi-lock me-1"></i> Senha</label
+          >
           <input
             type="password"
             id="password"
             formControlName="password"
-            class="code-input"
+            class="form-control"
             [ngClass]="{
               'is-invalid':
                 registerForm.get('password')?.invalid &&
-                registerForm.get('password')?.touched
+                (registerForm.get('password')?.dirty ||
+                  registerForm.get('password')?.touched)
             }"
           />
           <div
-            *ngIf="
-              registerForm.get('password')?.invalid &&
-              registerForm.get('password')?.touched
-            "
+            *ngIf="registerForm.get('password')?.errors?.['required'] && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
             class="invalid-feedback"
           >
-            <span *ngIf="registerForm.get('password')?.errors?.['required']"
-              >Senha é obrigatória.</span
-            >
-            <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
-              >A senha deve ter pelo menos 8 caracteres.</span
-            >
+            Senha é obrigatória.
+          </div>
+          <div
+            *ngIf="registerForm.get('password')?.errors?.['minlength'] && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+            class="invalid-feedback"
+          >
+            A senha deve ter pelo menos 8 caracteres.
           </div>
         </div>
 
-        <div class="line-number">5</div>
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
-        </div>
-
-        <div class="line-number">6</div>
         <button
           type="submit"
+          class="btn btn-primary w-100 mb-3"
           [disabled]="registerForm.invalid || isLoading"
-          class="btn btn-submit"
         >
           <span
             *ngIf="isLoading"
-            class="spinner-border spinner-border-sm"
+            class="spinner-border spinner-border-sm me-2"
             role="status"
             aria-hidden="true"
           ></span>
           {{ isLoading ? "Registrando..." : "Registrar" }}
         </button>
-        <div class="line-number">7</div>
-        <div class="login-link">
-          Já tem uma conta? <a [routerLink]="['/login']">Faça login aqui</a>.
-        </div>
-        <div class="line-number">8</div>
+
+        <p class="text-center mb-0">
+          Já tem uma conta?
+          <a routerLink="/login" class="text-decoration-none"
+            >Faça login aqui</a
+          >
+        </p>
       </form>
     </div>
   </div>

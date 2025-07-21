@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {
   AuthResponse,
   LoginCredentials,
-  ResgisterCredentials,
+  RegisterCredentials,
 } from '../models/user.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class AuthService {
       );
   }
 
-  register(userData: ResgisterCredentials): Observable<AuthResponse | null> {
+  register(userData: RegisterCredentials): Observable<AuthResponse | null> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/auth/register`, userData)
       .pipe(
@@ -97,6 +97,10 @@ export class AuthService {
 
   getFirstName(): string | null {
     return localStorage.getItem('userFirstName');
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
   }
 
   private setLoggedIn(value: boolean): void {

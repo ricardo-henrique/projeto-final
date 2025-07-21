@@ -1,100 +1,193 @@
-<div class="home-container">
-  <header class="main-header">
-    <div class="logo">
-      <a routerLink="/">
-        <img
-          src="https://placehold.co/40x40/007bff/ffffff?text=CMS"
-          alt="Logo CMS"
-          class="logo-image"
-        />
-        <span class="logo-text">Tech CMS</span>
+<!-- src/app/components/home/home.component.html -->
+
+<div class="container-fluid p-0">
+  <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" routerLink="/">
+        <i class="bi bi-cpu-fill text-primary fs-4 me-2"></i>
+        <!-- Ícone de CPU para o logo -->
+        <span class="fw-bold text-primary fs-4">Tech CMS</span>
       </a>
-    </div>
-    <nav class="main-nav">
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li *ngIf="isUserLoggedIn">
-          <a routerLink="/posts/create">Criar Post</a>
-        </li>
-        <li *ngIf="isUserLoggedIn && userRole === 'admin'">
-          <a routerLink="/admin/categories">Categorias</a>
-        </li>
-      </ul>
-    </nav>
-    <div class="auth-actions">
-      <ng-container *ngIf="!isUserLoggedIn">
-        <a routerLink="/login" class="btn btn-login">Login</a>
-        <a routerLink="/register" class="btn btn-register">Registrar</a>
-      </ng-container>
-      <ng-container *ngIf="isUserLoggedIn">
-        <span class="user-greeting">Olá, {{ userFirstName }}!</span>
-        <button (click)="logout()" class="btn btn-logout">Sair</button>
-      </ng-container>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/"
+              ><i class="bi bi-house-door me-1"></i> Home</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="isUserLoggedIn">
+            <a class="nav-link" routerLink="/posts/create"
+              ><i class="bi bi-plus-circle me-1"></i> Criar Post</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="isUserLoggedIn && userRole === 'admin'">
+            <a class="nav-link" routerLink="/admin/categories"
+              ><i class="bi bi-tags me-1"></i> Categorias</a
+            >
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <ng-container *ngIf="!isUserLoggedIn">
+            <a routerLink="/login" class="btn btn-outline-primary me-2"
+              ><i class="bi bi-box-arrow-in-right me-1"></i> Login</a
+            >
+            <a routerLink="/register" class="btn btn-primary"
+              ><i class="bi bi-person-plus me-1"></i> Registrar</a
+            >
+          </ng-container>
+          <ng-container *ngIf="isUserLoggedIn">
+            <span class="text-secondary me-2"
+              ><i class="bi bi-person-circle me-1"></i> Olá,
+              {{ userFirstName }}!</span
+            >
+            <button (click)="logout()" class="btn btn-primary">
+              <i class="bi bi-box-arrow-right me-1"></i> Sair
+            </button>
+          </ng-container>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="main-content">
-    <aside class="sidebar-left">
-      <h3>Categorias</h3>
-      <ul>
-        <li><a href="#">Processadores</a></li>
-        <li><a href="#">Placas de Vídeo</a></li>
-        <li><a href="#">Armazenamento</a></li>
-        <li><a href="#">Memória RAM</a></li>
-        <li><a href="#">Placas-Mãe</a></li>
-        <li><a href="#">Periféricos</a></li>
-      </ul>
-      <h3>Tags Populares</h3>
-      <div class="tag-list">
-        <span class="tag">#Intel</span>
-        <span class="tag">#AMD</span>
-        <span class="tag">#NVIDIA</span>
-        <span class="tag">#SSD</span>
-        <span class="tag">#DDR5</span>
-        <span class="tag">#Gaming</span>
-      </div>
-    </aside>
-
-    <section class="posts-section">
-      <h2 class="section-title">Últimos Lançamentos e Análises</h2>
-
-      <div *ngIf="isLoading" class="loading-indicator">
-        Carregando posts...
-        <div class="spinner-border text-primary" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-
-      <div *ngIf="!isLoading && posts.length === 0" class="no-posts-message">
-        Nenhum post encontrado. Seja o primeiro a criar um!
-      </div>
-
-      <div class="posts-grid" *ngIf="!isLoading && posts.length > 0">
-        <div class="post-card" *ngFor="let post of posts">
-          <img
-            [src]="post.imageUrl"
-            alt="{{ post.title }}"
-            class="post-image"
-            onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/000000?text=Imagem+Nao+Disponivel';"
-          />
-          <div class="post-content">
-            <h3 class="post-title">
-              <a [routerLink]="['/posts', post.slug]">{{ post.title }}</a>
-            </h3>
-            <p class="post-meta">
-              Por <span class="author-name">{{ post.author.username }}</span> em
-              <span class="post-category">{{ post.category.name }}</span>
-            </p>
-            <p class="post-date">{{ formatDate(post.createdAt) }}</p>
-            <div class="post-excerpt">
-              {{ post.content.substring(0, 150) }}...
-            </div>
-            <a [routerLink]="['/posts', post.slug]" class="read-more"
-              >Leia mais &rarr;</a
+  <main class="container-fluid py-4">
+    <div class="row">
+      <aside class="col-lg-3 mb-4">
+        <div class="card shadow-sm p-3">
+          <h3 class="text-primary border-bottom pb-2 mb-3">
+            <i class="bi bi-folder me-2"></i>Categorias
+          </h3>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Processadores</a
+              >
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Placas de Vídeo</a
+              >
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Armazenamento</a
+              >
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Memória RAM</a
+              >
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Placas-Mãe</a
+              >
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-decoration-none text-dark fw-normal"
+                ><i class="bi bi-arrow-right-short me-1"></i> Periféricos</a
+              >
+            </li>
+          </ul>
+          <h3 class="text-primary border-bottom pb-2 mb-3">
+            <i class="bi bi-hash me-2"></i>Tags Populares
+          </h3>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#Intel</span
+            >
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#AMD</span
+            >
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#NVIDIA</span
+            >
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#SSD</span
+            >
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#DDR5</span
+            >
+            <span class="badge bg-light text-secondary border border-secondary"
+              ><i class="bi bi-tag-fill me-1"></i>#Gaming</span
             >
           </div>
         </div>
-      </div>
-    </section>
+      </aside>
+
+      <section class="col-lg-9">
+        <h2 class="text-dark mb-4 text-center">
+          Últimos Lançamentos e Análises
+        </h2>
+
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando posts...</span>
+          </div>
+          <p class="mt-2 text-secondary">Carregando posts...</p>
+        </div>
+
+        <div
+          *ngIf="!isLoading && posts.length === 0"
+          class="alert alert-info text-center py-5"
+          role="alert"
+        >
+          Nenhum post encontrado. Seja o primeiro a criar um!
+        </div>
+
+        <div
+          class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+          *ngIf="!isLoading && posts.length > 0"
+        >
+          <div class="col" *ngFor="let post of posts">
+            <div class="card h-100 shadow-sm transition-transform">
+              <img
+                [src]="post.imageUrl"
+                alt="{{ post.title }}"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/000000?text=Imagem+Nao+Disponivel';"
+              />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title mb-2">
+                  <a
+                    [routerLink]="['/posts', post.slug]"
+                    class="text-decoration-none text-dark fw-bold"
+                    >{{ post.title }}</a
+                  >
+                </h5>
+                <p class="card-text text-muted small mb-2">
+                  <i class="bi bi-person-fill me-1"></i>Por
+                  <span class="fw-semibold">{{ post.author.firstName }}</span>
+                  em <span class="fw-semibold">{{ post.category?.name }}</span>
+                </p>
+                <p class="card-text text-muted small mb-3">
+                  <i class="bi bi-calendar-event me-1"></i
+                  >{{ formatDate(post.createdAt) }}
+                </p>
+                <p class="card-text flex-grow-1">
+                  {{ post.content.substring(0, 150) }}...
+                </p>
+                <a
+                  [routerLink]="['/posts', post.slug]"
+                  class="btn btn-outline-primary btn-sm mt-auto align-self-start"
+                  ><i class="bi bi-book me-1"></i> Leia mais &rarr;</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 </div>
