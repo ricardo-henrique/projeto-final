@@ -65,18 +65,19 @@ export class Home implements OnInit, OnDestroy {
    */
   loadPosts(categoryId: string | null = null): void {
     this.isLoading = true;
-    this.selectedCategoryId = categoryId; // Atualiza a categoria selecionada
+    this.selectedCategoryId = categoryId;
 
-    // Modifique PostService.getPosts() para aceitar um parâmetro de categoria
-    // Por enquanto, vamos simular a filtragem no frontend se sua API ainda não suportar
     this.postService.getPosts().subscribe({
       next: (data) => {
+        // LOG DE DEPURACAO AQUI: O QUE 'data' CONTÉM?
+        console.log('Dados de posts recebidos no HomeComponent:', data);
+
         if (categoryId) {
-          // Simula a filtragem no frontend se a API não filtrar por categoria
           this.posts = data.filter((post) => post.category?.id === categoryId);
         } else {
           this.posts = data;
         }
+        console.log('Posts após filtragem no HomeComponent:', this.posts); // O que está sendo atribuído a this.posts?
         this.isLoading = false;
       },
       error: (error) => {
@@ -114,12 +115,12 @@ export class Home implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  formatDate(dateString: string): string {
+  formatDate(date: Date): string {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    return new Date(dateString).toLocaleDateString('pt-BR', options);
+    return date.toLocaleDateString('pt-BR', options);
   }
 }

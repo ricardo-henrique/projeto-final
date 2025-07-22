@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,7 @@ import { Post } from '../../../models/post.model';
 
 @Component({
   selector: 'app-post-detail',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './post-detail.html',
   styleUrl: './post-detail.css',
 })

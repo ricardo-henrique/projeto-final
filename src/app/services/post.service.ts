@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { catchError, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Category, Post, PostPayload } from '../models/post.model';
 import { AuthService } from './auth.service';
 
@@ -18,7 +18,12 @@ export class PostService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.apiUrl}/posts`);
+    return this.http.get<Post[]>(`${this.apiUrl}/posts`).pipe(
+      catchError((error) => {
+        console.error('Erro ao carregar posts:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getPostBySlug(slug: string): Observable<Post | null> {
