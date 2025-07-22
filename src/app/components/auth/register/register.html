@@ -123,6 +123,32 @@
           </div>
         </div>
 
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="termsCheck"
+            formControlName="termsAccepted"
+          />
+          <label class="form-check-label" for="termsCheck">
+            Eu concordo com os
+            <a
+              href="#"
+              class="text-decoration-none"
+              data-bs-toggle="modal"
+              data-bs-target="#termsModal"
+              >Termos e Serviços</a
+            >
+          </label>
+          <div
+            *ngIf="registerForm.get('termsAccepted')?.errors?.['requiredTrue'] && (registerForm.get('termsAccepted')?.dirty || registerForm.get('termsAccepted')?.touched)"
+            class="invalid-feedback d-block"
+          >
+            Você deve aceitar os termos e serviços.
+          </div>
+        </div>
+
         <button
           type="submit"
           class="btn btn-primary w-100 mb-3"
@@ -144,6 +170,125 @@
           >
         </p>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Termos e Serviços -->
+<div
+  class="modal fade"
+  id="termsModal"
+  tabindex="-1"
+  aria-labelledby="termsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Termos e Serviços</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- O conteúdo dos termos e serviços será inserido aqui -->
+        <p><strong>1. Introdução</strong></p>
+        <p>
+          Bem-vindo aos Termos e Serviços do Tech CMS. Ao acessar ou usar nosso
+          serviço, você concorda em cumprir e estar vinculado a estes termos. Se
+          você não concordar com qualquer parte dos termos, não poderá acessar o
+          serviço.
+        </p>
+
+        <p><strong>2. Coleta e Uso de Informações Pessoais (LGPD)</strong></p>
+        <p>
+          Nós coletamos informações que você nos fornece diretamente, como nome,
+          sobrenome e endereço de e-mail, para criar e gerenciar sua conta,
+          publicar conteúdo e facilitar a comunicação. Seus dados são
+          armazenados de forma segura e utilizados estritamente para os fins
+          para os quais foram coletados, em conformidade com a Lei Geral de
+          Proteção de Dados (LGPD) - Lei nº 13.709/2018.
+        </p>
+        <ul>
+          <li>
+            <strong>Finalidade:</strong> Seus dados são usados para
+            autenticação, personalização da experiência, publicação de conteúdo
+            e comunicação essencial do serviço.
+          </li>
+          <li>
+            <strong>Consentimento:</strong> Ao se registrar, você consente com a
+            coleta e uso de seus dados conforme descrito nestes termos.
+          </li>
+          <li>
+            <strong>Direitos do Titular:</strong> Você tem o direito de acessar,
+            corrigir, excluir ou solicitar a portabilidade de seus dados. Para
+            exercer esses direitos, entre em contato conosco.
+          </li>
+          <li>
+            <strong>Compartilhamento:</strong> Não compartilhamos suas
+            informações pessoais com terceiros, exceto quando exigido por lei ou
+            com seu consentimento explícito.
+          </li>
+          <li>
+            <strong>Segurança:</strong> Empregamos medidas de segurança técnicas
+            e administrativas para proteger seus dados contra acesso não
+            autorizado, alteração, divulgação ou destruição.
+          </li>
+        </ul>
+
+        <p><strong>3. Conteúdo do Usuário</strong></p>
+        <p>
+          Você é responsável pelo conteúdo que publica no Tech CMS. Ao publicar,
+          você concede ao Tech CMS uma licença para usar, reproduzir e exibir
+          seu conteúdo dentro do escopo do serviço. Não é permitido publicar
+          conteúdo ilegal, ofensivo ou que viole direitos autorais.
+        </p>
+
+        <p><strong>4. Conduta do Usuário</strong></p>
+        <p>
+          Você concorda em não usar o serviço para fins ilegais ou não
+          autorizados. Isso inclui, mas não se limita a, assédio, spam,
+          distribuição de malware ou qualquer atividade que possa prejudicar o
+          serviço ou outros usuários.
+        </p>
+
+        <p><strong>5. Propriedade Intelectual</strong></p>
+        <p>
+          Todo o conteúdo e recursos do Tech CMS são de nossa propriedade ou
+          licenciados para nós, e são protegidos por leis de direitos autorais e
+          marcas registradas.
+        </p>
+
+        <p><strong>6. Limitação de Responsabilidade</strong></p>
+        <p>
+          O Tech CMS é fornecido "como está". Não garantimos que o serviço será
+          ininterrupto, seguro ou livre de erros. Não seremos responsáveis por
+          quaisquer danos diretos, indiretos, incidentais ou consequenciais
+          resultantes do uso ou da incapacidade de usar o serviço.
+        </p>
+
+        <p><strong>7. Alterações nos Termos</strong></p>
+        <p>
+          Reservamo-nos o direito de modificar estes Termos a qualquer momento.
+          Notificaremos você sobre quaisquer alterações publicando os novos
+          termos nesta página. Seu uso continuado do serviço após tais
+          modificações constitui sua aceitação dos novos Termos.
+        </p>
+
+        <p><strong>8. Contato</strong></p>
+        <p>
+          Se você tiver alguma dúvida sobre estes Termos, entre em contato
+          conosco.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
     </div>
   </div>
 </div>

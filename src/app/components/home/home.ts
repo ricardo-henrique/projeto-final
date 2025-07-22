@@ -70,14 +70,14 @@ export class Home implements OnInit, OnDestroy {
     this.postService.getPosts().subscribe({
       next: (data) => {
         // LOG DE DEPURACAO AQUI: O QUE 'data' CONTÉM?
-        console.log('Dados de posts recebidos no HomeComponent:', data);
+        // console.log('Dados de posts recebidos no HomeComponent:', data);
 
         if (categoryId) {
           this.posts = data.filter((post) => post.category?.id === categoryId);
         } else {
           this.posts = data;
         }
-        console.log('Posts após filtragem no HomeComponent:', this.posts); // O que está sendo atribuído a this.posts?
+        // console.log('Posts após filtragem no HomeComponent:', this.posts); // O que está sendo atribuído a this.posts?
         this.isLoading = false;
       },
       error: (error) => {
