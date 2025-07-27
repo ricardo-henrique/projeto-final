@@ -5,6 +5,7 @@ import { PostService } from '../../services/post.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class Home implements OnInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private postService: PostService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +89,10 @@ export class Home implements OnInit, OnDestroy {
     });
   }
 
+  getSanitizedHtml(htmlContent: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+  }
+
   /**
    * Carrega as categorias para a sidebar.
    */
@@ -116,11 +122,22 @@ export class Home implements OnInit, OnDestroy {
   }
 
   formatDate(date: Date): string {
+    if (!date) {
+      return 'Data Indisponível'; // Ou qualquer outra mensagem de fallback
+    }
+    // Tenta converter para Date se for string
+    const d = typeof date === 'string' ? new Date(date) : date;
+
+    // Verifica se o objeto Date é válido
+    if (isNaN(d.getTime())) {
+      return 'Data Inválida'; // Se a conversão resultou em uma data inválida
+    }
+
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString('pt-BR', options);
+    return d.toLocaleDateString('pt-BR', options);
   }
 }

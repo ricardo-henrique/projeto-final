@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PostService } from '../../../services/post.service';
 import { AuthService } from '../../../services/auth.service';
 import { Post } from '../../../models/post.model';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-post-detail',
@@ -28,7 +29,8 @@ export class PostDetail implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private postService: PostService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +97,10 @@ export class PostDetail implements OnInit, OnDestroy {
           this.router.navigate(['/']);
         },
       });
+  }
+
+  getSanitizedHtml(htmlContent: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
   }
 
   canEditOrDeletePost(): boolean {

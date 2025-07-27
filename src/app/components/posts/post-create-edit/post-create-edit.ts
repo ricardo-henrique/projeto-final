@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -10,9 +11,16 @@ import { Category, Post, PostPayload } from '../../../models/post.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { QuillModule } from 'ngx-quill';
 @Component({
   selector: 'app-post-create-edit',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+    QuillModule,
+  ],
   templateUrl: './post-create-edit.html',
   styleUrl: './post-create-edit.css',
 })
@@ -26,6 +34,30 @@ export class PostCreateEdit implements OnInit {
   postId: string | null = null;
   currentPost: Post | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+
+  quillConfig: QuillModule = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'], // negrito, itálico, sublinhado, tachado
+      ['blockquote', 'code-block'], // bloco de citação, bloco de código
+
+      [{ header: 1 }, { header: 2 }], // títulos
+      [{ list: 'ordered' }, { list: 'bullet' }], // listas ordenadas/não ordenadas
+      [{ script: 'sub' }, { script: 'super' }], // subscrito/sobrescrito
+      [{ indent: '-1' }, { indent: '+1' }], // recuo/avançar recuo
+      [{ direction: 'rtl' }], // direção do texto
+
+      [{ size: ['small', false, 'large', 'huge'] }], // tamanhos de fonte personalizados
+      [{ header: [1, 2, 3, 4, 5, 6, false] }], // todos os títulos
+
+      [{ color: [] }, { background: [] }], // cores de texto e fundo
+      [{ font: [] }], // fontes
+      [{ align: [] }], // alinhamento
+
+      ['clean'], // remover formatação
+
+      ['link', 'image', 'video'], // link, imagem, vídeo
+    ],
+  };
 
   constructor(
     private fb: FormBuilder,

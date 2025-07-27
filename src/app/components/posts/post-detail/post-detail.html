@@ -61,9 +61,10 @@
 
       <hr class="my-4" />
 
-      <div class="post-content fs-5 lh-base text-dark">
-        <p>{{ post.content }}</p>
-      </div>
+      <div
+        class="post-content fs-5 lh-base text-dark"
+        [innerHTML]="getSanitizedHtml(post.content)"
+      ></div>
 
       <hr class="my-4" />
 

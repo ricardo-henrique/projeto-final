@@ -49,20 +49,23 @@
           <label for="content" class="form-label"
             ><i class="bi bi-file-earmark-text me-1"></i> Conteúdo</label
           >
-          <textarea
+          <quill-editor
             id="content"
             formControlName="content"
-            class="form-control"
-            rows="8"
-            [ngClass]="{
-              'is-invalid':
-                postForm.get('content')?.invalid &&
-                (postForm.get('content')?.dirty ||
-                  postForm.get('content')?.touched)
+            [styles]="{
+              'min-height': '200px',
+              'background-color': '#fff',
+              border: '1px solid #ddd'
             }"
-          ></textarea>
+            [placeholder]="'Comece a escrever seu post aqui...'"
+            [modules]="quillConfig"
+          ></quill-editor>
           <div
-            *ngIf="postForm.get('content')?.errors?.['required'] && (postForm.get('content')?.dirty || postForm.get('content')?.touched)"
+            *ngIf="
+              postForm.get('content')?.invalid &&
+              (postForm.get('content')?.dirty ||
+                postForm.get('content')?.touched)
+            "
             class="invalid-feedback"
           >
             Conteúdo é obrigatório.

@@ -178,9 +178,10 @@
                   <i class="bi bi-calendar-event me-1"></i
                   >{{ formatDate(post.createdAt) }}
                 </p>
-                <p class="card-text flex-grow-1">
-                  {{ post.content.substring(0, 150) }}...
-                </p>
+                <p
+                  class="card-text flex-grow-1"
+                  [innerHTML]="getSanitizedHtml(post.content.substring(0, 200))"
+                ></p>
                 <a
                   [routerLink]="['/posts', post.slug]"
                   class="btn btn-outline-primary btn-sm mt-auto align-self-start"
