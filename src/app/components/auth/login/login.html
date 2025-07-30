@@ -1,109 +1,103 @@
-<div
-  class="container d-flex justify-content-center align-items-center min-vh-100 bg-light"
->
-  <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%">
-    <div class="card-body">
-      <h2 class="card-title text-center mb-4 text-primary">
-        <i class="bi bi-box-arrow-in-right me-2"></i>Entrar na sua Conta
-      </h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Mensagem de erro geral da API -->
+<div class="bg-page-main min-vh-100 font-inter d-flex flex-column">
+  <main
+    class="flex-grow-1 d-flex align-items-center justify-content-center py-5"
+  >
+    <div class="card shadow-lg p-4 p-md-5 rounded-lg login-card">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4 fs-3 fw-bold text-gray-900">
+          <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>Login
+        </h2>
+
+        <!-- Indicador de Carregamento -->
+        <div *ngIf="isLoading" class="text-center my-3">
+          <div class="spinner-border text-medium-blue-purple" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p class="mt-2 text-secondary">Autenticando...</p>
+        </div>
         <div
           *ngIf="errorMessage"
-          class="alert alert-danger text-center mb-3"
+          class="alert alert-danger text-center py-2"
           role="alert"
         >
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
           {{ errorMessage }}
         </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label"
-            ><i class="bi bi-envelope me-1"></i> Email</label
-          >
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            class="form-control"
-            [ngClass]="{
-              'is-invalid':
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control rounded-md border border-light-purple focus-ring-2 focus-ring-light-purple transition-colors"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('email')?.invalid &&
+                  loginForm.get('email')?.touched
+              }"
+            />
+            <div
+              *ngIf="
                 loginForm.get('email')?.invalid &&
-                (loginForm.get('email')?.dirty ||
-                  loginForm.get('email')?.touched)
-            }"
-          />
-          <div
-            *ngIf="loginForm.get('email')?.errors?.['required'] && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
-            class="invalid-feedback"
-          >
-            Email é obrigatório.
+                loginForm.get('email')?.touched
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">
+                Email é obrigatório.
+              </div>
+              <div *ngIf="loginForm.get('email')?.errors?.['email']">
+                Email inválido.
+              </div>
+            </div>
           </div>
-          <div
-            *ngIf="loginForm.get('email')?.errors?.['email'] && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
-            class="invalid-feedback"
-          >
-            Email inválido.
-          </div>
-        </div>
 
-        <div class="mb-2">
-          <!-- Reduzido mb-4 para mb-2 para dar espaço ao link -->
-          <label for="password" class="form-label"
-            ><i class="bi bi-lock me-1"></i> Senha</label
-          >
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            class="form-control"
-            [ngClass]="{
-              'is-invalid':
+          <div class="mb-4">
+            <label for="password" class="form-label text-gray-700">Senha</label>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="form-control rounded-md border border-light-purple focus-ring-2 focus-ring-light-purple transition-colors"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('password')?.invalid &&
+                  loginForm.get('password')?.touched
+              }"
+            />
+            <div
+              *ngIf="
                 loginForm.get('password')?.invalid &&
-                (loginForm.get('password')?.dirty ||
-                  loginForm.get('password')?.touched)
-            }"
-          />
-          <div
-            *ngIf="loginForm.get('password')?.errors?.['required'] && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
-            class="invalid-feedback"
-          >
-            Senha é obrigatória.
+                loginForm.get('password')?.touched
+              "
+              class="invalid-feedback"
+            >
+              Senha é obrigatória.
+            </div>
           </div>
-          <div
-            *ngIf="loginForm.get('password')?.errors?.['minlength'] && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
-            class="invalid-feedback"
-          >
-            Senha deve ter no mínimo 8 caracteres.
+
+          <div class="d-grid gap-2 mb-3">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg rounded-pill shadow-sm hover-scale-105 transition-transform fw-bold"
+              [disabled]="loginForm.invalid || isLoading"
+            >
+              <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+            </button>
           </div>
-        </div>
 
-        <div class="text-end mb-3">
-          <a href="#" class="text-decoration-none small text-muted"
-            >Esqueceu a senha? Clique aqui</a
-          >
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn-primary w-100 mb-3"
-          [disabled]="loginForm.invalid || isLoading"
-        >
-          <span
-            *ngIf="isLoading"
-            class="spinner-border spinner-border-sm me-2"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          {{ isLoading ? "Entrando..." : "Entrar" }}
-        </button>
-
-        <p class="text-center mb-0">
-          Não tem uma conta?
-          <a routerLink="/register" class="text-decoration-none"
-            >Registre-se aqui</a
-          >
-        </p>
-      </form>
+          <p class="text-center text-muted mt-3">
+            Não tem uma conta?
+            <a
+              routerLink="/register"
+              class="text-medium-blue-purple text-decoration-none fw-semibold hover-text-dark transition-colors"
+              >Registre-se aqui</a
+            >
+          </p>
+        </form>
+      </div>
     </div>
-  </div>
+  </main>
 </div>

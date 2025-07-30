@@ -1,133 +1,253 @@
-<div class="container-fluid p-0">
-  <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" routerLink="/">
-        <i class="bi bi-cpu-fill text-primary fs-4 me-2"></i>
-        <!-- Ícone de CPU para o logo -->
-        <span class="fw-bold text-primary fs-4">Tech+</span>
-      </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+<div class="bg-page-main min-vh-100 font-inter">
+  <header
+    class="navbar navbar-expand-lg navbar-dark bg-header-dark-blue shadow-md py-3 sticky-top"
+  >
+    <div class="container-fluid px-4">
+      <a
+        class="navbar-brand d-flex align-items-center text-white hover-text-light-purple transition-colors"
+        routerLink="/"
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/"
-              ><i class="bi bi-house-door me-1"></i> Home</a
+        <i class="bi bi-cpu-fill fs-3 me-2"></i>
+        <span class="fw-bold fs-4">Tech+</span>
+      </a>
+      <div class="flex-grow mx-4 max-w-xl d-none d-md-block position-relative">
+        <input
+          type="text"
+          placeholder="Buscar posts..."
+          class="form-control rounded-pill ps-5 pe-3 py-2 border border-light-purple focus-outline-none focus-ring-2 focus-ring-light-purple focus-border-transparent transition-colors text-dark"
+        />
+        <i
+          class="bi bi-search position-absolute start-3 top-50 translate-middle-y text-muted"
+        ></i>
+      </div>
+
+      <!-- User Actions / Auth Buttons -->
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="isUserLoggedIn">
+          <a
+            routerLink="/posts/create"
+            class="btn btn-warning rounded-pill px-4 py-2 me-2 d-none d-md-flex align-items-center shadow-sm hover-scale-105 text-dark fw-bold"
+          >
+            <i class="bi bi-plus-circle me-2"></i> Criar Post
+          </a>
+          <a
+            routerLink="/admin/categories"
+            *ngIf="userRole === 'admin'"
+            class="btn btn-info rounded-pill px-4 py-2 me-2 d-none d-md-flex align-items-center shadow-sm hover-scale-105 text-white fw-bold"
+          >
+            <i class="bi bi-tags me-2"></i> Categorias
+          </a>
+
+          <!-- Dropdown para usuário logado -->
+          <div class="dropdown">
+            <button
+              class="btn btn-link text-white text-decoration-none dropdown-toggle d-flex align-items-center hover-text-light-purple"
+              type="button"
+              id="userDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
-          </li>
-          <li class="nav-item" *ngIf="isUserLoggedIn">
-            <a class="nav-link" routerLink="/posts/create"
-              ><i class="bi bi-plus-circle me-1"></i> Criar Post</a
-            >
-          </li>
-          <li class="nav-item" *ngIf="isUserLoggedIn && userRole === 'admin'">
-            <a class="nav-link" routerLink="/admin/categories"
-              ><i class="bi bi-tags me-1"></i> Categorias</a
-            >
-          </li>
-        </ul>
-        <div class="d-flex align-items-center">
-          <ng-container *ngIf="!isUserLoggedIn">
-            <a routerLink="/login" class="btn btn-outline-primary me-2"
-              ><i class="bi bi-box-arrow-in-right me-1"></i> Login</a
-            >
-            <a routerLink="/register" class="btn btn-primary"
-              ><i class="bi bi-person-plus me-1"></i> Registrar</a
-            >
-          </ng-container>
-          <ng-container *ngIf="isUserLoggedIn">
-            <span class="text-secondary me-2"
-              ><i class="bi bi-person-circle me-1"></i> Olá,
-              {{ userFirstName }}!</span
-            >
-            <button (click)="logout()" class="btn btn-primary">
-              <i class="bi bi-box-arrow-right me-1"></i> Sair
+              <i class="bi bi-person-circle fs-4 me-2"></i>
+              <span class="fw-semibold d-none d-md-block"
+                >Olá, {{ userFirstName }}!</span
+              >
             </button>
-          </ng-container>
-        </div>
+            <ul
+              class="dropdown-menu dropdown-menu-end shadow-lg"
+              aria-labelledby="userDropdown"
+            >
+              <li>
+                <a routerLink="/posts/create" class="dropdown-item d-md-none"
+                  ><i class="bi bi-plus-circle me-2 text-warning"></i> Criar
+                  Post</a
+                >
+              </li>
+              <li>
+                <a
+                  routerLink="/admin/categories"
+                  *ngIf="userRole === 'admin'"
+                  class="dropdown-item d-md-none"
+                  ><i class="bi bi-tags me-2 text-info"></i> Categorias</a
+                >
+              </li>
+              <li><hr class="dropdown-divider d-md-none" /></li>
+              <li>
+                <a
+                  (click)="logout()"
+                  class="dropdown-item text-danger cursor-pointer"
+                  ><i class="bi bi-box-arrow-right me-2"></i> Sair</a
+                >
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!isUserLoggedIn">
+          <a
+            routerLink="/login"
+            class="btn btn-outline-warning rounded-pill px-4 py-2 me-2 transition-colors hover-bg-warning hover-text-dark fw-bold"
+          >
+            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+          </a>
+          <a
+            routerLink="/register"
+            class="btn btn-warning rounded-pill px-4 py-2 transition-colors hover-scale-105 text-dark fw-bold"
+          >
+            <i class="bi bi-person-plus me-1"></i> Registrar
+          </a>
+        </ng-container>
       </div>
     </div>
   </header>
 
-  <main class="container-fluid py-4">
-    <div class="row">
-      <aside class="col-lg-3 mb-4">
-        <div class="card shadow-sm p-3">
-          <h3 class="text-primary border-bottom pb-2 mb-3">
-            <i class="bi bi-folder me-2"></i>Categorias
+  <!-- Main Content Area -->
+  <main class="container-fluid mx-auto px-4 py-5">
+    <div class="row g-4">
+      <!-- Sidebar for Categories -->
+      <aside class="col-lg-3">
+        <div
+          class="card shadow-sm p-4 rounded-lg mb-4 sidebar-card border-medium-blue-purple"
+        >
+          <h3
+            class="fs-5 fw-bold text-gray-800 border-bottom border-medium-blue-purple pb-3 mb-4 d-flex align-items-center"
+          >
+            <i class="bi bi-folder-fill text-medium-blue-purple me-2"></i
+            >Categorias
           </h3>
-          <ul class="list-unstyled mb-4">
+          <ul class="list-unstyled p-0 m-0">
             <li class="mb-2">
               <a
                 href="javascript:void(0)"
                 (click)="onCategorySelected(null)"
+                class="d-flex align-items-center px-3 py-2 rounded-md transition-colors sidebar-link"
                 [ngClass]="{
-                  'fw-bold text-primary': selectedCategoryId === null,
-                  'text-decoration-none text-dark fw-normal':
-                    selectedCategoryId !== null
+                  'active-sidebar-item': selectedCategoryId === null,
+                  'text-gray-700 hover-bg-light': selectedCategoryId !== null
                 }"
               >
-                <i class="bi bi-grid-fill me-1"></i> Todas as Categorias
+                <i class="bi bi-grid-fill me-2"></i> Todas as Categorias
               </a>
             </li>
-            <hr class="my-2" />
-            <!-- Lista de categorias dinâmicas -->
+            <hr class="my-3 border-gray-200" />
             <li class="mb-2" *ngFor="let category of categories">
               <a
                 href="javascript:void(0)"
                 (click)="onCategorySelected(category.id)"
+                class="d-flex align-items-center px-3 py-2 rounded-md transition-colors sidebar-link"
                 [ngClass]="{
-                  'fw-bold text-primary': selectedCategoryId === category.id,
-                  'text-decoration-none text-dark fw-normal':
+                  'active-sidebar-item': selectedCategoryId === category.id,
+                  'text-gray-700 hover-bg-light':
                     selectedCategoryId !== category.id
                 }"
               >
-                <i class="bi bi-arrow-right-short me-1"></i> {{ category.name }}
+                <i class="bi bi-arrow-right-short me-2"></i> {{ category.name }}
               </a>
             </li>
           </ul>
-          <h3 class="text-primary border-bottom pb-2 mb-3">
-            <i class="bi bi-hash me-2"></i>Tags Populares
+        </div>
+
+        <div class="card shadow-sm p-4 rounded-lg sidebar-card border-success">
+          <h3
+            class="fs-5 fw-bold text-gray-800 border-bottom border-success pb-3 mb-4 d-flex align-items-center"
+          >
+            <i class="bi bi-hash text-success me-2"></i>Tags Populares
           </h3>
           <div class="d-flex flex-wrap gap-2">
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#Intel</span
+            <span
+              class="badge bg-primary text-white px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#Intel</span
             >
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#AMD</span
+            <span
+              class="badge bg-info text-white px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#AMD</span
             >
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#NVIDIA</span
+            <span
+              class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#NVIDIA</span
             >
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#SSD</span
+            <span
+              class="badge bg-danger text-white px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#SSD</span
             >
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#DDR5</span
+            <span
+              class="badge bg-success text-white px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#DDR5</span
             >
-            <span class="badge bg-light text-secondary border border-secondary"
-              ><i class="bi bi-tag-fill me-1"></i>#Gaming</span
+            <span
+              class="badge bg-secondary text-white px-3 py-1 rounded-pill fw-normal transition-colors hover-bg-dark hover-text-white cursor-pointer"
+              >#Gaming</span
             >
           </div>
         </div>
       </aside>
 
+      <!-- Main Post Feed -->
       <section class="col-lg-9">
-        <h2 class="text-dark mb-4 text-center">
-          Últimos Lançamentos e Análises
-        </h2>
+        <h3 class="fs-4 fw-bold text-white-75 mb-4 text-center">
+          Posts em Destaque
+        </h3>
+        <div
+          id="featuredPostsCarousel"
+          class="carousel slide carousel-fade mb-5 shadow-lg rounded-lg overflow-hidden"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#featuredPostsCarousel"
+              [attr.data-bs-slide-to]="i"
+              [class.active]="i === 0"
+              [attr.aria-current]="i === 0 ? 'true' : null"
+              [attr.aria-label]="'Slide ' + (i + 1)"
+              *ngFor="let post of posts; let i = index; trackBy: trackByPostId"
+            ></button>
+          </div>
+          <div class="carousel-inner">
+            <div
+              class="carousel-item"
+              [class.active]="i === 0"
+              *ngFor="let post of posts; let i = index; trackBy: trackByPostId"
+            >
+              <a [routerLink]="['/posts', post.slug]">
+                <img
+                  [src]="post.imageUrl"
+                  class="d-block w-100 carousel-image"
+                  alt="{{ post.title }}"
+                  onerror="this.onerror=null;this.src='https://placehold.co/1200x400/cccccc/000000?text=Imagem+Nao+Disponivel';"
+                />
+                <div
+                  class="carousel-caption d-none d-md-block carousel-caption-custom"
+                >
+                  <h5 class="fw-bold fs-3">{{ post.title }}</h5>
+                </div>
+              </a>
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#featuredPostsCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#featuredPostsCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+          </button>
+        </div>
+
+        <h3 class="fs-4 fw-bold text-white-75 mb-4 text-center">
+          Últimos Posts e Análises
+        </h3>
 
         <div *ngIf="isLoading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
+          <div class="spinner-border text-medium-blue-purple" role="status">
             <span class="visually-hidden">Carregando posts...</span>
           </div>
           <p class="mt-2 text-secondary">Carregando posts...</p>
@@ -135,58 +255,72 @@
 
         <div
           *ngIf="!isLoading && posts.length === 0"
-          class="alert alert-info text-center py-5"
+          class="alert alert-info text-center py-5 rounded-lg shadow-sm"
           role="alert"
         >
-          <i class="bi bi-info-circle me-2"></i> Nenhum post encontrado para
-          esta categoria.
+          <i class="bi bi-info-circle fs-4 me-2"></i> Nenhum post encontrado
+          para esta categoria.
         </div>
 
-        <div
-          class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
-          *ngIf="!isLoading && posts.length > 0"
-        >
+        <div class="row row-cols-1 g-4" *ngIf="!isLoading && posts.length > 0">
           <div class="col" *ngFor="let post of posts">
-            <div class="card h-100 shadow-sm transition-transform">
-              <img
-                [src]="post.imageUrl"
-                alt="{{ post.title }}"
-                class="card-img-top"
-                style="height: 200px; object-fit: cover"
-                onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/000000?text=Imagem+Nao+Disponivel';"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title mb-2">
-                  <a
-                    [routerLink]="['/posts', post.slug]"
-                    class="text-decoration-none text-dark fw-bold"
-                    >{{ post.title }}</a
-                  >
-                </h5>
-                <p class="card-text text-muted small mb-2">
-                  <i class="bi bi-person-fill me-1"></i>Por
-                  <span class="fw-semibold"
-                    >{{ post.author.firstName }}
-                    {{ post.author.lastName }}</span
-                  >
-                  em
-                  <span class="fw-semibold">{{
-                    post.category?.name || "N/A"
-                  }}</span>
-                </p>
-                <p class="card-text text-muted small mb-3">
-                  <i class="bi bi-calendar-event me-1"></i
-                  >{{ formatDate(post.createdAt) }}
-                </p>
-                <p
-                  class="card-text flex-grow-1"
-                  [innerHTML]="getSanitizedHtml(post.content.substring(0, 200))"
-                ></p>
-                <a
-                  [routerLink]="['/posts', post.slug]"
-                  class="btn btn-outline-primary btn-sm mt-auto align-self-start"
-                  ><i class="bi bi-book me-1"></i> Leia mais &rarr;</a
-                >
+            <div
+              class="card shadow-sm rounded-lg hover-shadow-lg transition-shadow duration-200 ease-in-out post-card border border-light-purple"
+            >
+              <div class="row g-0">
+                <div *ngIf="post.imageUrl" class="col-md-4">
+                  <img
+                    [src]="post.imageUrl"
+                    alt="{{ post.title }}"
+                    class="img-fluid rounded-start post-card-image"
+                    onerror="this.onerror=null;this.src='https://placehold.co/400x250/cccccc/000000?text=Imagem+Nao+Disponivel';"
+                  />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body d-flex flex-column h-100">
+                    <h3 class="card-title fs-4 fw-bold text-gray-900 mb-2">
+                      <a
+                        [routerLink]="['/posts', post.slug]"
+                        class="text-decoration-none text-dark hover-text-medium-blue-purple transition-colors"
+                        >{{ post.title }}</a
+                      >
+                    </h3>
+                    <div
+                      class="text-gray-600 text-sm mb-3 d-flex flex-wrap align-items-center gap-3"
+                    >
+                      <span class="d-flex align-items-center">
+                        <i
+                          class="bi bi-person me-1 text-medium-blue-purple"
+                        ></i>
+                        Por {{ post.author.firstName }}
+                        {{ post.author.lastName }}
+                      </span>
+                      <span
+                        class="d-flex align-items-center"
+                        *ngIf="post.category"
+                      >
+                        <i class="bi bi-tag me-1 text-info"></i> Em
+                        {{ post.category.name }}
+                      </span>
+                      <!-- <span class="d-flex align-items-center">
+                        <i class="bi bi-calendar-event me-1 text-success"></i>
+                        {{ formatDate(post.createdAt) }}
+                      </span> -->
+                    </div>
+                    <p
+                      class="card-text text-gray-700 leading-relaxed mb-4 flex-grow-1 post-content-preview"
+                      [innerHTML]="
+                        getSanitizedHtml(post.content.substring(0, 250) + '...')
+                      "
+                    ></p>
+                    <a
+                      [routerLink]="['/posts', post.slug]"
+                      class="btn btn-outline-medium-blue-purple btn-sm mt-auto align-self-start rounded-pill px-4 py-2 transition-colors hover-bg-medium-blue-purple hover-text-white"
+                    >
+                      Leia mais <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -194,4 +328,15 @@
       </section>
     </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="bg-header-dark-blue text-white py-4 mt-8 shadow-inner">
+    <div class="container text-center">
+      <p class="mb-2">&copy; 2025 Tech CMS. Todos os direitos reservados.</p>
+      <p class="text-gray-400 text-sm">
+        Desenvolvido com <i class="bi bi-heart-fill text-danger mx-1"></i> e
+        Angular.
+      </p>
+    </div>
+  </footer>
 </div>

@@ -1,6 +1,265 @@
-/* You can add global styles to this file, and also import other style files */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --header-dark-blue: #1a2a80;
+  --page-main-background: #3b38a0;
+  --medium-blue-purple: #7a85c1;
+  --light-purple: #b2b0e8;
+
+  --bs-primary: var(--medium-blue-purple);
+  --bs-secondary: #6c757d;
+  --bs-success: #28a745;
+  --bs-danger: #dc3545;
+  --bs-warning: #ffc107;
+  --bs-info: #17a2b8;
+  --bs-dark: #343a40;
+  --bs-light: #f8f9fa;
+  --bs-purple: #6f42c1;
+
+  --text-gray-800: #343a40;
+  --text-gray-600: #6c757d;
+  --text-gray-700: #495057;
+  --text-gray-900: #212529;
+  --text-white-75: rgba(255, 255, 255, 0.75);
+  --text-light-purple: var(--light-purple);
+
+  --bg-blue-100: #e0f2fe;
+
+  --bs-primary-rgb: 122, 133, 193;
+  --bs-warning-rgb: 255, 193, 7;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--page-main-background) !important;
+}
+
+.bg-header-dark-blue {
+  background-color: var(--header-dark-blue) !important;
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.hover-text-primary:hover {
+  color: var(--bs-primary) !important;
+}
+
+.hover-text-warning:hover {
+  color: var(--bs-warning) !important;
+}
+
+.hover-text-dark:hover {
+  color: var(--bs-dark) !important;
+}
+
+.hover-bg-light:hover {
+  background-color: var(--bs-light) !important;
+}
+
+.hover-bg-dark:hover {
+  background-color: var(--bs-dark) !important;
+}
+
+.hover-text-white:hover {
+  color: white !important;
+}
+
+.hover-text-light-purple:hover {
+  color: var(--light-purple) !important;
+}
+
+.hover-scale-105 {
+  transform: scale(1);
+  transition: transform 0.2s ease-in-out;
+}
+.hover-scale-105:hover {
+  transform: scale(1.05);
+}
+
+.transition-colors {
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+.transition-transform {
+  transition: transform 0.2s ease-in-out;
+}
+
+.focus-outline-none:focus {
+  outline: none;
+}
+
+.focus-ring-2:focus {
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.focus-border-transparent:focus {
+  border-color: transparent;
+}
+
+.btn-purple {
+  background-color: var(--bs-purple);
+  border-color: var(--bs-purple);
+  color: white;
+}
+.btn-purple:hover {
+  background-color: #5a38a7;
+  border-color: #5a38a7;
+  color: white;
+}
+
+.start-3 {
+  left: 0.75rem;
+}
+
+.text-gray-800 {
+  color: var(--text-gray-800);
+}
+.text-gray-600 {
+  color: var(--text-gray-600);
+}
+.text-gray-700 {
+  color: var(--text-gray-700);
+}
+.text-gray-900 {
+  color: var(--text-gray-900);
+}
+.text-white-75 {
+  color: var(--text-white-75);
+}
+
+.bg-blue-100 {
+  background-color: var(--bg-blue-100);
+}
+
+.bg-gradient-primary-dark {
+  background: linear-gradient(90deg, var(--header-dark-blue), #2a3a90);
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(
+    45deg,
+    var(--medium-blue-purple),
+    var(--light-purple)
+  );
+}
+
+.post-content-preview p {
+  margin-bottom: 0.5rem;
+}
+.post-content-preview p:last-child {
+  margin-bottom: 0;
+}
+.post-content-preview strong {
+  font-weight: bold;
+  color: var(--text-gray-900);
+}
+
+footer {
+  background-color: var(--bs-dark);
+}
+
+.sidebar-card .list-unstyled li a.sidebar-link {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  display: block;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.sidebar-card .list-unstyled li a.sidebar-link:hover {
+  background-color: var(--bs-light);
+  color: var(--medium-blue-purple) !important;
+}
+
+.active-sidebar-item {
+  background-color: var(--medium-blue-purple) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.active-sidebar-item:hover {
+  background-color: var(--medium-blue-purple) !important;
+  color: white !important;
+  cursor: default;
+}
+
+.btn-outline-medium-blue-purple {
+  color: var(--medium-blue-purple);
+  border-color: var(--medium-blue-purple);
+}
+.btn-outline-medium-blue-purple:hover {
+  color: white;
+  background-color: var(--medium-blue-purple);
+  border-color: var(--medium-blue-purple);
+}
+
+.hover-bg-medium-blue-purple:hover {
+  background-color: var(--medium-blue-purple) !important;
+}
+
+.carousel-image {
+  height: 400px; /* Altura fixa para as imagens do carrossel */
+  object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+  filter: brightness(0.7); /* Escurece a imagem para o texto ser mais legível */
+}
+
+.carousel-caption-custom {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Fundo semi-transparente para o texto */
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  bottom: 20%; /* Posição do caption */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  text-align: center;
+}
+
+.carousel-caption-custom h5 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 2.25rem; /* Ajuste o tamanho da fonte */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para o texto */
+}
+
+.carousel-caption-custom p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+/* Ajustes para indicadores e controles do carrossel */
+.carousel-indicators button {
+  background-color: var(--light-purple);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo para os ícones de navegação */
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+/* Responsividade para o carrossel */
+@media (max-width: 767.98px) {
+  .carousel-image {
+    height: 250px; /* Altura menor em dispositivos móveis */
+  }
+  .carousel-caption-custom {
+    bottom: 5%; /* Ajusta a posição do caption em mobile */
+    padding: 0.5rem 1rem;
+  }
+  .carousel-caption-custom h5 {
+    font-size: 1.5rem;
+  }
+  .carousel-caption-custom p {
+    font-size: 0.9rem;
+  }
 }

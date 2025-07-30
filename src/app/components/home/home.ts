@@ -140,4 +140,8 @@ export class Home implements OnInit, OnDestroy {
     };
     return d.toLocaleDateString('pt-BR', options);
   }
+
+  trackByPostId(index: number, post: Post): string {
+    return post.id;
+  }
 }

@@ -1,0 +1,11 @@
+.login-card {
+  max-width: 450px; /* Largura máxima para o card de login */
+  width: 90%; /* Ocupa 90% da largura em telas menores */
+  border: 1px solid var(--light-purple); /* Borda sutil com a nova cor */
+}
+
+/* Ajustes para o input de busca na navbar (se for um componente separado, não precisa aqui) */
+.form-control.border-light-purple:focus {
+  border-color: var(--light-purple) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--light-purple-rgb), 0.25); /* Usar RGB da light-purple */
+}

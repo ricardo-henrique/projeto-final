@@ -1,0 +1,95 @@
+/* src/app/components/home/home.component.css */
+
+/* Estilos específicos para o HomeComponent */
+
+/* Navbar (classes do header no HTML) */
+/* As classes bg-header-dark-blue, hover-text-light-purple, transition-colors
+   já vêm do styles.css global. */
+
+/* Search Bar (classes do input no HTML) */
+/* As classes border-light-purple, focus-outline-none, focus-ring-2,
+   focus-ring-light-purple, focus-border-transparent, transition-colors
+   já vêm do styles.css global. */
+
+/* Botões de Ação (classes dos botões no HTML) */
+/* As classes btn-warning, rounded-pill, shadow-sm, hover-scale-105,
+   text-dark, fw-bold, btn-info, text-white, btn-outline-warning,
+   hover-bg-warning, hover-text-dark, transition-colors já vêm do styles.css global. */
+
+/* Dropdown do Usuário (classes do dropdown no HTML) */
+/* As classes dropdown, btn-link, text-white, text-decoration-none,
+   dropdown-toggle, hover-text-light-purple, shadow-lg, dropdown-menu-end,
+   dropdown-item, text-warning, text-info, text-danger, cursor-pointer
+   já vêm do Bootstrap ou do styles.css global. */
+
+/* Sidebar Cards (classes do aside e dos cards) */
+.sidebar-card {
+  /* A borda (border-medium-blue-purple, border-success) vem do styles.css global */
+}
+
+.sidebar-card h3 {
+  /* A borda inferior (border-medium-blue-purple, border-success) vem do styles.css global */
+}
+
+.sidebar-card .list-unstyled li a.sidebar-link {
+  /* transition-colors já vem do styles.css global */
+}
+
+.sidebar-card .list-unstyled li a.sidebar-link:hover {
+  /* hover-bg-light já vem do styles.css global */
+  color: var(--medium-blue-purple) !important; /* Cor dos links no hover */
+}
+
+.active-sidebar-item {
+  background-color: var(
+    --medium-blue-purple
+  ) !important; /* Nova cor para o item ativo */
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Tags Populares (classes dos badges) */
+/* As classes badge, bg-primary, bg-info, bg-warning, bg-danger,
+   bg-success, bg-secondary, text-white, px-3, py-1, rounded-pill,
+   fw-normal, transition-colors, hover-bg-dark, hover-text-white,
+   cursor-pointer já vêm do Bootstrap ou do styles.css global. */
+
+/* Hero Section (classes do card) */
+/* As classes shadow-lg, bg-gradient-hero, text-white, text-white-75
+   já vêm do styles.css global. */
+
+/* Post Cards (classes do card) */
+.post-card {
+  /* shadow-sm, rounded-lg, hover-shadow-lg, transition-shadow,
+     ease-in-out, border, border-light-purple já vêm do styles.css global. */
+}
+
+.post-card:hover {
+  transform: translateY(-3px); /* Leve levantamento no hover */
+}
+
+.post-card-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Responsividade da imagem do post card para layout horizontal em telas médias */
+@media (min-width: 768px) {
+  .post-card-image {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: calc(0.5rem - 1px);
+  }
+}
+
+/* Conteúdo do Post Preview (classes do p) */
+/* post-content-preview e seus estilos de p e strong já vêm do styles.css global. */
+
+/* Botão "Leia Mais" (classes do botão) */
+/* btn-outline-medium-blue-purple, btn-sm, mt-auto, align-self-start,
+   rounded-pill, px-4, py-2, transition-colors, hover-bg-medium-blue-purple,
+   hover-text-white já vêm do styles.css global. */
+
+/* Footer (classes do footer) */
+/* bg-dark, text-white, shadow-inner, text-gray-400, text-sm, text-danger
+   já vêm do styles.css global. */
